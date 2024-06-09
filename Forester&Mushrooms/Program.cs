@@ -10,6 +10,14 @@
 
         static void Main()
         {
+            TernarySearchTree<char> tree = new('*');
+            tree.Insert('.', "2");
+            tree.Insert('C', "21");
+            tree.Insert('.', "22");
+            tree.Insert('C', "23");
+            tree.Insert('.', "223");
+
+
             using StreamReader reader = new(pathToTheFileDescribingTheTask);
             string? lineOfTheFile;
             while ((lineOfTheFile = reader.ReadLine()) != null)
@@ -35,7 +43,7 @@
                 {
                     Console.WriteLine($"{numberLine}-я строка: ");
                     string line = Console.ReadLine()!;
-                    if (line != string.Empty)
+                    if (string.IsNullOrEmpty(line))
                     {
                         if (line.Length == 3)
                         {
@@ -68,7 +76,7 @@
                 while (!checkTheCorrectOfTheCharInput)
                 {
                     string enterSymbol = Console.ReadLine()!;
-                    if (enterSymbol != string.Empty)
+                    if (string.IsNullOrEmpty(enterSymbol))
                     {
                         char symbol = Convert.ToChar(enterSymbol);
                         return GetCorrectCellValue(ref symbol);
