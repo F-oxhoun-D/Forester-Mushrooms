@@ -6,87 +6,37 @@
 
         static readonly string pathToTheFileDescribingTheTask = "info.txt";
 
-        static int n = 1;
-
         static void Main()
         {
-            TernarySearchTree<char> tree = new('*');
-            tree.Insert('.', "2");
-            tree.Insert('C', "21");
-            tree.Insert('.', "22");
-            tree.Insert('C', "23");
-            tree.Insert('.', "223");
-
+            TernarySearchTree tree = new('*');
+            /*tree.Insert('.', "1");
+            tree.Insert('C', "10");
+            tree.Insert('.', "11");
+            tree.Insert('C', "12");
+            tree.Insert('.', "110");
+            tree.Insert('C', "1100");
+            tree.Insert('C', "11000");
+            tree.Insert('.', "1101");
+            tree.Insert('.', "120");
+            tree.Insert('C', "1200");
+            tree.Insert('C', "12000");
+            tree.Insert('.', "1201");*/
 
             using StreamReader reader = new(pathToTheFileDescribingTheTask);
             string? lineOfTheFile;
             while ((lineOfTheFile = reader.ReadLine()) != null)
                 Console.WriteLine(lineOfTheFile);
 
+            int n = 0;
             Console.Write("\n\n\nРазмерноость поля n = ");
             while (!int.TryParse(Console.ReadLine(), out n))
                 Console.Write("Введите число ");
             field = new char[n, 3];
 
             Console.WriteLine("\nЗаполните клетки поля (возможны только символы '.', 'W' и 'C'");
-            FillInTheField();
-            
+            FillingInTheCells.Fill(field);
+
+            tree = FillingInTheTree.Fill(tree, field);
         }
-
-        static void FillInTheField()
-        {
-            int numberLine = 1;
-            while (numberLine != n + 1)
-            {
-                bool checkCorrectLine = false;
-                while (!checkCorrectLine)
-                {
-                    Console.WriteLine($"{numberLine}-я строка: ");
-                    string line = Console.ReadLine()!;
-                    if (string.IsNullOrEmpty(line))
-                    {
-                        if (line.Length == 3)
-                        {
-                            for (int numberColumn = 0; numberColumn < line.Length; numberColumn++)
-                            {
-                                char c = line[numberColumn];
-                                if (c is not '.' and not 'W' and not 'C')
-                                    c = GetCorrectCellValue(ref c);
-
-                                field![numberLine - 1, numberColumn] = c;
-                            }
-                            numberLine++;
-                            checkCorrectLine = true;
-                        }
-                        else
-                            Console.WriteLine($"К-во символов {line.Length} меньше необходимого: 3)");
-                    }
-                    else
-                        Console.WriteLine("Введена пустая строка");
-                }
-            }
-        }
-
-        static char GetCorrectCellValue(ref char cellValue)
-        {
-            if (cellValue is not '.' and not 'W' and not 'C')
-            {
-                Console.WriteLine($"Замените символ {cellValue} на один из  трёх: '.', 'W', 'C'");
-                bool checkTheCorrectOfTheCharInput = false;
-                while (!checkTheCorrectOfTheCharInput)
-                {
-                    string enterSymbol = Console.ReadLine()!;
-                    if (string.IsNullOrEmpty(enterSymbol))
-                    {
-                        char symbol = Convert.ToChar(enterSymbol);
-                        return GetCorrectCellValue(ref symbol);
-                    }
-                    else
-                        Console.WriteLine("Введён пустой символ");
-                }
-            }
-            return cellValue;
-        }
-
     }
 }

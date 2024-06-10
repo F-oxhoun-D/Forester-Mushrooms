@@ -1,17 +1,17 @@
 ﻿namespace Forester_Mushrooms
 {
-    internal class TernarySearchTree<T>(T node)
+    public class TernarySearchTree(char node)
     {
-        public Node<T> Root { get; set; } = new(node);
+        public Node Tree { get; set; } = new(node);
 
-        public Node<T> Insert(T element, string pathToInsertTheNode) // вставка
+        public Node Insert(char element, string pathToInsertTheNode) // вставка
         {
-            Root = TraversTheTreeToInsertElement(Root, element, pathToInsertTheNode);
+            Tree = TraversTheTreeToInsertElement(Tree, element, pathToInsertTheNode);
 
-            return Root;
+            return Tree;
         }
 
-        private static Node<T> TraversTheTreeToInsertElement(Node<T> node, T element, string pathToInsertTheNode)
+        private static Node TraversTheTreeToInsertElement(Node node, char element, string pathToInsertTheNode)
         {
             int positionOfTheElementToInsert = 0;
             bool checkOnInsert = false;
@@ -19,9 +19,9 @@
             {
                 if (positionOfTheElementToInsert == pathToInsertTheNode.Length - 1)
                 {
-                    if (pathToInsertTheNode[positionOfTheElementToInsert] == '1')
+                    if (pathToInsertTheNode[positionOfTheElementToInsert] == '0')
                         node.Left = new(element);
-                    else if (pathToInsertTheNode[positionOfTheElementToInsert] == '2')
+                    else if (pathToInsertTheNode[positionOfTheElementToInsert] == '1')
                         node.Eq = new(element);
                     else
                         node.Right = new(element);
@@ -29,19 +29,61 @@
                     return node;
                 }
 
-                if (pathToInsertTheNode[positionOfTheElementToInsert] == '1')
+                if (pathToInsertTheNode[positionOfTheElementToInsert] == '0')
                     node.Left = TraversTheTreeToInsertElement(node.Left, element,
-                        pathToInsertTheNode.Substring(positionOfTheElementToInsert + 1, pathToInsertTheNode.Length - 1 - positionOfTheElementToInsert));
-                else if (pathToInsertTheNode[positionOfTheElementToInsert] == '2')
+                        pathToInsertTheNode.Substring(positionOfTheElementToInsert + 1,
+                        pathToInsertTheNode.Length - 1 - positionOfTheElementToInsert));
+                else if (pathToInsertTheNode[positionOfTheElementToInsert] == '1')
                     node.Eq = TraversTheTreeToInsertElement(node.Eq, element,
-                        pathToInsertTheNode.Substring(positionOfTheElementToInsert + 1, pathToInsertTheNode.Length - 1 - positionOfTheElementToInsert));
+                        pathToInsertTheNode.Substring(positionOfTheElementToInsert + 1,
+                        pathToInsertTheNode.Length - 1 - positionOfTheElementToInsert));
                 else
                     node.Right = TraversTheTreeToInsertElement(node.Right, element,
-                        pathToInsertTheNode.Substring(positionOfTheElementToInsert + 1, pathToInsertTheNode.Length - 1 - positionOfTheElementToInsert));
+                        pathToInsertTheNode.Substring(positionOfTheElementToInsert + 1, 
+                        pathToInsertTheNode.Length - 1 - positionOfTheElementToInsert));
                 checkOnInsert = true;
             }
 
             return node;
+        }
+
+        public bool SearchByPath(string path)
+        {
+            return true;
+        }
+
+        public static int GetCountNumber(TernarySearchTree tree, string path)
+        {
+            int count = 0;
+            Node node = tree.Tree.Left;
+            if (node == null)
+                return 0;
+            for (int i = 0; i < path.Length + 1; i++)
+            {
+                if (i == 0 && i ==  path.Length - 1 || i == path.Length)
+                {
+                    if (node.Left != null)
+                        count++;
+                    if (node.Eq != null)
+                        count++;
+                    if (node.Right != null)
+                        count++;
+                    break;
+                }
+                if (i == 0)
+                    continue;
+
+                if (path[i] == '0')
+                    node = node.Left;
+                else if (path[i] == '1')
+                    node = node.Eq;
+                else
+                    node = node.Right;
+
+                if (node == null)
+                    break;
+            }
+            return count;
         }
 
         /*public bool Search(string word) // поиск
@@ -82,10 +124,10 @@
 
         public void Traverse() // обход
         {
-            TraverseHelper(Root, "");
+            TraverseHelper(Tree, "");
         }
 
-        private static void TraverseHelper(Node<T> node, string buffer)
+        private static void TraverseHelper(Node node, string buffer)
         {
             if (node == null)
                 return;
@@ -94,10 +136,6 @@
 
             buffer += node.data;
 
-            if (node.isEndOfString)
-            {
-                Console.WriteLine(buffer);
-            }
 
             TraverseHelper(
                 node.Eq, buffer[..^1]

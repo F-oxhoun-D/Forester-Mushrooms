@@ -1,21 +1,18 @@
 ﻿namespace Forester_Mushrooms
 {
-    public class Node<T>
+    public class Node
     {
-        public T data;
+        public char data;
 
-        public bool isEndOfString;
+        public Node Left { get; set; }
 
-        public Node<T> Left { get; set; }
+        public Node Eq { get; set; }
 
-        public Node<T> Eq { get; set; }
+        public Node Right { get; set; }
 
-        public Node<T> Right { get; set; }
-
-        public Node(T data)
+        public Node(char data)
         {
             this.data = data;
-            isEndOfString = false;
             Left = Eq = Right = null!;
         }
     }
