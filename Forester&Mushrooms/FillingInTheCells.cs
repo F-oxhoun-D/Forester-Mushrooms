@@ -18,6 +18,8 @@
                     {
                         if (line.Length >= 3)
                         {
+                            line = line[..3];
+                            line = line.ToUpper();
                             for (int numberColumn = 0; numberColumn < line.Length; numberColumn++)
                             {
                                 char c = line[numberColumn];

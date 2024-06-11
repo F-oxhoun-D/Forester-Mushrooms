@@ -100,42 +100,6 @@
             return count;
         }
 
-        /*public bool Search(string word) // поиск
-        {
-            if (string.IsNullOrEmpty(word))
-                return false;
-
-            return SearchHelper(root, word, 0);
-        }*/
-
-        /*private static bool SearchHelper(Node<T> node, string word,
-                                  int index)
-        {
-            if (node == null)
-                return false;
-
-            if (word[index] < node.data)
-            {
-                return SearchHelper(node.left, word, index);
-            }
-            else if (word[index] > node.data)
-            {
-                return SearchHelper(node.right, word, index);
-            }
-            else
-            {
-                if (index == word.Length - 1)
-                {
-                    return node.isEndOfString;
-                }
-                else
-                {
-                    return SearchHelper(node.eq, word,
-                                        index + 1);
-                }
-            }
-        }*/
-
         // обход
         public void Traverse() =>  PrintPaths(Tree, "");
 
@@ -185,20 +149,21 @@
 
         public int CalcMaxPossibleNumberOfMushroomsCollected()
         {
-            if (treeBranches.Count == 0) return 0;
-            else
+            if (Tree.Left == null) return 0;
+
+            if (treeBranches.Count == 0)
+                GetBranches();
+
+            int maxCount = 0;
+            char mushroom = 'C';
+
+            foreach (var branch in treeBranches)
             {
-                int maxCount = 0;
-                char mushroom = 'C';
-
-                foreach (var branch in treeBranches)
-                {
-                    int count = branch.Count(c => c == mushroom);
-                    maxCount = count >= maxCount ? count : maxCount;
-                }
-
-                return maxCount;
+                int count = branch.Count(c => c == mushroom);
+                maxCount = count >= maxCount ? count : maxCount;
             }
+
+            return maxCount;
         }
     }   
 }
