@@ -1,18 +1,17 @@
 ﻿namespace Forester_Mushrooms
 {
-    public static class FillingInTheTree
+    public class FillingInTheTree(char[,] field)
     {
-        public static TernarySearchTree Fill(TernarySearchTree tree, char[,] field)
-        {
-            string s = "";
-            tree = BypassAndInsert(tree, field, s);
+        readonly TernarySearchTree tree = new();
 
-            return tree;
-        }
+        readonly char[,] field = field;
 
-        private static TernarySearchTree BypassAndInsert(TernarySearchTree tree, char[,] field, string pathTree)
+        public TernarySearchTree Fill() => BypassAndInsert();
+
+        private TernarySearchTree BypassAndInsert()
         {
-            string passedСol = ""; // пройденные колонки (последовательность номеров колонок служит для того, чтобы мы не попадали в ранее пройденный)
+            string pathTree = string.Empty; // путь до узла (0 - левый, 1 - средний, 2 - правый узлы)
+            string passedСol = string.Empty; // пройденные колонки (последовательность номеров колонок служит для того, чтобы мы не попадали в ранее пройденный)
             int row = 0;
             int col = 0;
             int counter; // счётчик количества узлов
@@ -35,7 +34,6 @@
                             break;
                         if (counter == 2 && col == 2 && passedСol[^1] == '2') // если попали в крайний правый элемент
                         {
-
                             pathTree = pathTree[..^2];
 
                             col = int.Parse(passedСol.Substring(passedСol.Length - 1, 1));
@@ -123,7 +121,6 @@
                 }
             }
             return tree;
-
         }
     }
 }

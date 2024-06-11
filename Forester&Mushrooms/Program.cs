@@ -8,8 +8,8 @@
 
         static void Main()
         {
-            TernarySearchTree tree = new('*');
-            /*tree.Insert('.', "1");
+            /*TernarySearchTree tree = new('*');
+            tree.Insert('.', "1");
             tree.Insert('C', "10");
             tree.Insert('.', "11");
             tree.Insert('C', "12");
@@ -36,7 +36,9 @@
             Console.WriteLine("\nЗаполните клетки поля (возможны только символы '.', 'W' и 'C'");
             FillingInTheCells.Fill(field);
 
-            tree = FillingInTheTree.Fill(tree, field);
+            FillingInTheTree fillingInTheTree = new(field);
+            TernarySearchTree tree = fillingInTheTree.Fill();
+            tree.Traverse();
         }
     }
 }

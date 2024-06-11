@@ -1,21 +1,35 @@
-﻿namespace Forester_Mushrooms
-{
-    public class TernarySearchTree(char node)
-    {
-        public Node Tree { get; set; } = new(node);
+﻿using System.IO;
 
-        public Node Insert(char element, string pathToInsertTheNode) // вставка
+namespace Forester_Mushrooms
+{
+    public class TernarySearchTree
+    {
+        public Node Tree { get; set; }
+
+        public TernarySearchTree(char data)
+        {
+            Tree = new(data);
+        }
+
+        public TernarySearchTree()
+        {
+            Tree = new('#');
+        }
+
+        // вставка
+        public Node Insert(char element, string pathToInsertTheNode) 
         {
             Tree = TraversTheTreeToInsertElement(Tree, element, pathToInsertTheNode);
 
             return Tree;
         }
 
+        // обход и вставка
         private static Node TraversTheTreeToInsertElement(Node node, char element, string pathToInsertTheNode)
         {
             int positionOfTheElementToInsert = 0;
             bool checkOnInsert = false;
-            while(!checkOnInsert)
+            while (!checkOnInsert)
             {
                 if (positionOfTheElementToInsert == pathToInsertTheNode.Length - 1)
                 {
@@ -39,7 +53,7 @@
                         pathToInsertTheNode.Length - 1 - positionOfTheElementToInsert));
                 else
                     node.Right = TraversTheTreeToInsertElement(node.Right, element,
-                        pathToInsertTheNode.Substring(positionOfTheElementToInsert + 1, 
+                        pathToInsertTheNode.Substring(positionOfTheElementToInsert + 1,
                         pathToInsertTheNode.Length - 1 - positionOfTheElementToInsert));
                 checkOnInsert = true;
             }
@@ -52,7 +66,7 @@
             return true;
         }
 
-        public static int GetCountNumber(TernarySearchTree tree, string path)
+        public static int GetCountNumber(TernarySearchTree tree, string path) // получить номер следующего узла
         {
             int count = 0;
             Node node = tree.Tree.Left;
@@ -60,7 +74,7 @@
                 return 0;
             for (int i = 0; i < path.Length + 1; i++)
             {
-                if (i == 0 && i ==  path.Length - 1 || i == path.Length)
+                if (i == 0 && i == path.Length - 1 || i == path.Length)
                 {
                     if (node.Left != null)
                         count++;
@@ -124,26 +138,27 @@
 
         public void Traverse() // обход
         {
-            TraverseHelper(Tree, "");
+            PrintPaths(Tree, "");
         }
 
-        private static void TraverseHelper(Node node, string buffer)
+        private static void PrintPaths(Node node, string path)
         {
-            if (node == null)
+            if (node == null) return;
+
+            // Добавляем текущий узел к пути
+            path += node.data + " ";
+
+            // Если это листовой узел, выводим путь
+            if (node.Left == null && node.Eq == null && node.Right == null)
+            {
+                Console.WriteLine(path);
                 return;
+            }
 
-            TraverseHelper(node.Left, buffer);
-
-            buffer += node.data;
-
-
-            TraverseHelper(
-                node.Eq, buffer[..^1]
-                             + node.data);
-
-            TraverseHelper(
-                node.Right,
-                buffer[..^1]);
+            // Рекурсивно обходим левое, среднее и правое поддеревья
+            PrintPaths(node.Left!, path);
+            PrintPaths(node.Eq!, path);
+            PrintPaths(node.Right!, path);
         }
-    }
+    }   
 }
