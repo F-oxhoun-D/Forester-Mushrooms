@@ -1,9 +1,9 @@
-﻿using System.IO;
-
-namespace Forester_Mushrooms
+﻿namespace Forester_Mushrooms
 {
     public class TernarySearchTree
     {
+        List<string> treeBranches = [];
+
         public Node Tree { get; set; }
 
         public TernarySearchTree(char data)
@@ -136,10 +136,8 @@ namespace Forester_Mushrooms
             }
         }*/
 
-        public void Traverse() // обход
-        {
-            PrintPaths(Tree, "");
-        }
+        // обход
+        public void Traverse() =>  PrintPaths(Tree, "");
 
         private static void PrintPaths(Node node, string path)
         {
@@ -159,6 +157,48 @@ namespace Forester_Mushrooms
             PrintPaths(node.Left!, path);
             PrintPaths(node.Eq!, path);
             PrintPaths(node.Right!, path);
+        }
+
+        public List<string> GetBranches() => GetPaths(Tree, "");
+
+        private List<string> GetPaths(Node node, string path)
+        {
+            if (node == null) return treeBranches;
+
+            // Добавляем текущий узел к пути
+            path += node.data + " ";
+
+            // Если это листовой узел, выводим путь
+            if (node.Left == null && node.Eq == null && node.Right == null)
+            {
+                treeBranches.Add(path);
+                return treeBranches;
+            }
+
+            // Рекурсивно обходим левое, среднее и правое поддеревья
+            GetPaths(node.Left!, path);
+            GetPaths(node.Eq!, path);
+            GetPaths(node.Right!, path);
+
+            return treeBranches;
+        }
+
+        public int CalcMaxPossibleNumberOfMushroomsCollected()
+        {
+            if (treeBranches.Count == 0) return 0;
+            else
+            {
+                int maxCount = 0;
+                char mushroom = 'C';
+
+                foreach (var branch in treeBranches)
+                {
+                    int count = branch.Count(c => c == mushroom);
+                    maxCount = count >= maxCount ? count : maxCount;
+                }
+
+                return maxCount;
+            }
         }
     }   
 }

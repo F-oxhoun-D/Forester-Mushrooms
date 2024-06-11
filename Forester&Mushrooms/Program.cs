@@ -33,12 +33,17 @@
                 Console.Write("Введите число ");
             field = new char[n, 3];
 
-            Console.WriteLine("\nЗаполните клетки поля (возможны только символы '.', 'W' и 'C'");
+            Console.WriteLine("\nЗаполните клетки поля (возможны только символы '.', 'W' и 'C'\n");
             FillingInTheCells.Fill(field);
 
             FillingInTheTree fillingInTheTree = new(field);
             TernarySearchTree tree = fillingInTheTree.Fill();
             tree.Traverse();
+            List<string> treeBranches = tree.GetBranches();
+
+            int maxCountMushrooms = tree.CalcMaxPossibleNumberOfMushroomsCollected();
+            Console.WriteLine($"Максимально возможное количество грибов, которые может собрать лесник," +
+                $" равно {maxCountMushrooms}");
         }
     }
 }
